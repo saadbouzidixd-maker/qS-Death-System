@@ -1,0 +1,12 @@
+target/
+.idea/
+*.iml
+.vscode/
+run/
+server/
+.tooling/
+.gravesx-audit/
+*.db
+*.db-wal
+*.db-shm
+*.log

@@ -1,0 +1,74 @@
+qS Death System
+===============
+
+Copyright (C) qS Death System contributors.
+
+This project is a derivative work of GravesX:
+
+    GravesX
+    https://github.com/Legoman99573/GravesX
+    Copyright (C) Ranull
+    Contributors: JaySmethers, Legoman99573 and the GravesX contributors
+
+GravesX itself is based on Graves, originally created by Ranull
+(https://gitlab.com/ranull/minecraft/graves/).
+
+License
+-------
+
+qS Death System is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, version 3 of the License only (GPL-3.0-only).
+
+qS Death System is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+The complete license text is provided in the LICENSE file. The original GravesX
+project is licensed under GPL-3.0-only as well; that license is preserved and
+this derivative work is distributed under the same terms. qS Death System is
+NOT MIT licensed.
+
+Derived components
+------------------
+
+The following parts are based on GravesX implementations and keep their
+attribution headers in the source files:
+
+* dev.qsdeath.util.ExperienceUtil
+  Based on com.ranull.graves.util.ExperienceUtil (total experience calculation).
+
+* dev.qsdeath.util.ItemCodec
+  Based on the Bukkit object-stream inventory serialisation used by
+  com.ranull.graves.util.Base64Util and com.ranull.graves.util.InventoryUtil.
+
+* dev.qsdeath.display.HeadService
+  Based on the skull profile/texture handling of GravesX
+  (SkinTextureUtil and SkinTextureUtil_post_1_21_9).
+
+* dev.qsdeath.display.NameplateService
+  TextDisplay nameplate technique derived from
+  dev.cwhead.GravesX.manager.TextDisplayManager.
+
+* Architectural concepts (death capture before item removal, text-display
+  holograms, evidence records, item safety on restart) follow the GravesX
+  architecture as described in docs/AUDIT-AND-DESIGN.md.
+
+Deliberately not reused
+-----------------------
+
+GravesX is a 67k-line general-purpose grave plugin with runtime library
+downloading (Libby), H2/MySQL/PostgreSQL/MariaDB support, 40+ soft integrations,
+compass teleportation, grave GUIs and many features that conflict with the qS
+Death System specification (single SQLite database, police-only evidence access,
+no public teleportation, no resource packs). Those components were replaced by
+a focused implementation; the audit report documents the decision and the
+compatibility findings.
+
+Third-party libraries (shaded)
+------------------------------
+
+* sqlite-jdbc (org.xerial:sqlite-jdbc) - Apache License 2.0
+* Minecraft/Paper API (provided by the server, not shaded)
+
+No resource pack or client-side modification is used by this plugin.

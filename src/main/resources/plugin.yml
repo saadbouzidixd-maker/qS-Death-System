@@ -1,0 +1,82 @@
+name: qSDeathSystem
+version: '1.0.0'
+main: dev.qsdeath.QSDeathSystem
+api-version: '1.21'
+description: Persistent death evidence, police crime scene reports, SQLite archival and hospital transfer for roleplay servers.
+authors:
+  - qS Death System contributors
+  - Ranull (GravesX)
+  - Legoman99573 (GravesX)
+website: https://github.com/Legoman99573/GravesX
+load: POSTWORLD
+folia-supported: false
+
+commands:
+  hospital:
+    description: Manage the single hospital operating-room spawn.
+    usage: /hospital <set|teleport|info>
+  qsds:
+    description: qS Death System administration.
+    usage: /qsds help
+    aliases:
+      - qsdeath
+      - deathsystem
+
+permissions:
+  qscrimescenes.police:
+    description: Allows right-clicking a death evidence chest with the police shovel to read the crime report and remove the evidence.
+    default: op
+  qscrimescenes.police.give:
+    description: Allows giving the police evidence shovel to a player.
+    default: op
+
+  qsds.hospital:
+    description: Parent permission for all hospital commands.
+    default: op
+    children:
+      qsds.hospital.set: true
+      qsds.hospital.teleport: true
+      qsds.hospital.info: true
+
+  qsds.hospital.set:
+    description: Allows setting the hospital operating-room spawn.
+    default: op
+  qsds.hospital.teleport:
+    description: Allows teleporting to the configured hospital.
+    default: op
+  qsds.hospital.info:
+    description: Allows viewing the configured hospital location.
+    default: op
+
+  qsds.admin:
+    description: Full administrative access to qS Death System.
+    default: op
+    children:
+      qsds.hospital: true
+      qsds.evidence.list: true
+      qsds.evidence.info: true
+      qsds.evidence.recover: true
+      qsds.reload: true
+      qsds.status: true
+      qsds.debug: true
+      qscrimescenes.police: true
+      qscrimescenes.police.give: true
+
+  qsds.evidence.list:
+    description: Allows listing evidence records and archives.
+    default: op
+  qsds.evidence.info:
+    description: Allows inspecting a single evidence record.
+    default: op
+  qsds.evidence.recover:
+    description: Allows recovering an archived inventory.
+    default: op
+  qsds.reload:
+    description: Allows reloading the plugin configuration.
+    default: op
+  qsds.status:
+    description: Allows checking plugin and database status.
+    default: op
+  qsds.debug:
+    description: Allows running diagnostic commands and reading debug logging.
+    default: op

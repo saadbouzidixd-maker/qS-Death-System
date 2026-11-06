@@ -1,0 +1,154 @@
+# ============================================================
+#  qS Death System - configuration
+#  Minecraft 1.21.11 / Leaf (Paper compatible API)
+#  Licensed GPL-3.0-only. Derived from GravesX.
+# ============================================================
+config-version: 1
+
+# Print extra diagnostic information to the server console.
+debug: false
+
+storage:
+  # SQLite database file, relative to plugins/qSDeathSystem/
+  file: "database.db"
+  # Milliseconds SQLite waits for a locked database before failing.
+  busy-timeout-ms: 10000
+  # Crash-safety journal directory (relative to the plugin data folder).
+  journal-directory: "journal"
+
+death:
+  # Store the victim's total experience and level in the evidence record.
+  capture-experience: true
+  # Remove vanilla death drops after they have been captured.
+  clear-vanilla-drops: true
+  # Retry world placement this many times before reporting a failure.
+  # Stored inventories are never lost: failed placements stay in SQLite.
+  placement-retries: 3
+
+evidence:
+  chest:
+    # Block ordinary players from opening evidence chests.
+    lock: true
+  head:
+    # Place the deceased player's real head above the evidence.
+    enabled: true
+  name:
+    # Floating victim name above the evidence (TextDisplay entity).
+    enabled: true
+    # Intentionally limited to the victim name by default.
+    format: "%victim%"
+    # Vertical offset above the chest block (in blocks).
+    offset-y: 2.15
+    billboard: CENTER
+    shadowed: true
+    see-through: false
+
+police:
+  tool:
+    name: "&ePolice Evidence Shovel"
+    lore:
+      - "&7Right-click a crime scene chest to"
+      - "&7collect the report and remove evidence."
+      - "&8Authorized personnel only."
+    unbreakable: true
+    glow: false
+  report:
+    # Lines printed privately to the officer. A line containing %killer% is
+    # skipped entirely when no player killer is known.
+    lines:
+      - "&8&m----------------------------------------"
+      - "&c&lCRIME SCENE REPORT"
+      - "&7Victim: &f%victim%"
+      - "&7Killer: &f%killer%"
+      - "&7Cause: &f%cause%"
+      - "&7Location: &f%world%"
+      - "&7Coordinates: &fX: %x%, Y: %y%, Z: %z%"
+      - "&7Date: &f%date%"
+      - "&7Time: &f%time%"
+      - "&7Evidence ID: &f#%id%"
+      - "&8&m----------------------------------------"
+      - "&aEvidence archived and removed."
+
+hospital:
+  enabled: true
+  # Respawn behaviour when the hospital is not configured or invalid:
+  #   world-spawn = respawn at the first world's spawn (safe fallback)
+  #   vanilla     = leave the vanilla respawn location untouched
+  fallback: "world-spawn"
+  # Optional world name used by the world-spawn fallback. Empty = first world.
+  fallback-world: ""
+  # Log a console warning when a player dies without a valid hospital.
+  warn-on-death: true
+
+recovery:
+  # Re-grant stored experience when an archived inventory is recovered.
+  grant-experience: true
+
+time:
+  # Java ZoneId name, or "system" for the server default time zone.
+  zone: "system"
+  date-format: "yyyy-MM-dd"
+  time-format: "HH:mm:ss"
+
+evidence-list-page-size: 10
+
+messages:
+  prefix: "&8[&cqS Death System&8] &r"
+  no-permission: "&cYou do not have permission to do that."
+  player-only: "&cThis command can only be used by a player."
+  unknown-command: "&cUnknown subcommand. Use &f/%command% help&c."
+  usage:
+    hospital: "&cUsage: /hospital <set|teleport|info>"
+    tool: "&cUsage: /qsds tool give [player]"
+    evidence: "&cUsage: /qsds evidence <list|info|recover> ..."
+  hospital:
+    set: "&aHospital operating-room spawn set to &f%world% %x%, %y%, %z%&a."
+    teleporting: "&aTeleporting to the hospital..."
+    not-configured: "&cNo hospital has been configured. Use /hospital set first."
+    invalid: "&cThe configured hospital is invalid: %reason%"
+    info-header: "&8&m------&r &cqS Death System - Hospital &8&m------"
+    info-world: "&7World: &f%world%"
+    info-coordinates: "&7Coordinates: &f%x%, %y%, %z%"
+    info-rotation: "&7Yaw / Pitch: &f%yaw% / %pitch%"
+    info-status: "&7Status: %status%"
+    valid: "&avalid"
+    invalid-status: "&cinvalid (%reason%)"
+  death:
+    hospital: "&7You wake up in the hospital operating room."
+    no-hospital: "&eNo hospital is configured; you respawned at a safe fallback location."
+  police:
+    sealed: "&cThis crime scene is sealed. Only authorized police may open it."
+    not-evidence: "&7That is not a registered crime scene chest."
+    denied: "&cYou are not authorized to process crime scenes."
+    processed: "&7This evidence has already been processed."
+    busy: "&7This evidence is currently being processed."
+    archived: "&aEvidence archived. Chest, head and name display removed."
+    tool-given: "&aPolice evidence shovel given to &f%player%&a."
+    tool-received: "&aYou received a police evidence shovel."
+    tool-invalid: "&cThat item is not a genuine police evidence shovel."
+  evidence:
+    not-found: "&cNo evidence record found for &f%id%&c."
+    list-header: "&8&m------&r &cEvidence &7(%status%, page %page%) &8&m------"
+    list-empty: "&7No evidence records found."
+    list-line: "&7#%id% &f%victim% &8- &7%status% &8- &f%world% %x%, %y%, %z% &8- &7%date% %time%"
+    list-footer: "&7Use &f/qsds evidence info <id>&7 for details."
+    info-header: "&8&m------&r &cEvidence #%id% &8&m------"
+    info-line: "&7%key%: &f%value%"
+    recovered: "&aRecovered evidence #%id% for &f%player%&a (%items% item stacks, %overflow% items dropped)."
+    already-recovered: "&cThis archive has already been recovered."
+    recovery-failed: "&cCould not recover this evidence: %reason%"
+    archive-none: "&7No archive exists for evidence #%id%."
+    processing: "&7Working..."
+  status:
+    header: "&8&m------&r &cqS Death System - Status &8&m------"
+    line: "&7%key%: &f%value%"
+  reload:
+    done: "&aConfiguration reloaded."
+    storage-note: "&7Database settings are applied on the next server start."
+  error:
+    database: "&cA database error occurred. Check the server console."
+    internal: "&cAn internal error occurred. Check the server console."
+    world-missing: "&cWorld &f%world%&c is not loaded."
+  debug:
+    evidence-created: "&aDiagnostic evidence #%id% created at your location."
+    reconcile: "&aReconciled &f%count%&a pending evidence record(s)."
